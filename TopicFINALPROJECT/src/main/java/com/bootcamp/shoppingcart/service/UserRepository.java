@@ -7,5 +7,5 @@ import com.bootcamp.shoppingcart.entity.User;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long>{
-	
+	User findById(Long id);
 }

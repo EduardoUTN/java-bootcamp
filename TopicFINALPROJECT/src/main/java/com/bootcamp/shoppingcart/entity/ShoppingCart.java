@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -19,7 +20,8 @@ public class ShoppingCart {
 	@Column(name = "id")
 	private Long id;
 	
-	@OneToMany(mappedBy = "shoppingCart")
+	@OneToMany
+	@JoinColumn(name="shoppingcart_id", referencedColumnName="id")
 	private List<ProductLine> productLine;
   
 	 @NotNull
@@ -59,5 +61,13 @@ public class ShoppingCart {
 
 	public void setProductLine(List<ProductLine> productLine) {
 		this.productLine = productLine;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 }

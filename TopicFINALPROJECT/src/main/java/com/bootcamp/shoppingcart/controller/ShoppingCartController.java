@@ -16,34 +16,46 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriTemplate;
 
 import com.bootcamp.shoppingcart.entity.ShoppingCart;
+import com.bootcamp.shoppingcart.exceptions.ShoppingCartDoesNotExistException;
+import com.bootcamp.shoppingcart.exceptions.UserDoesNotExistException;
 import com.bootcamp.shoppingcart.service.ShoppingCartRepository;
+import com.bootcamp.shoppingcart.service.UserRepository;
 
 @RestController
 @RequestMapping(value = "/api/user/{usrid}/cart")
 public class ShoppingCartController {
 	@Autowired
 	private ShoppingCartRepository shoppingCartRepository;
-
+	@Autowired
+	private UserRepository userRepository;
 	
-	//Get Shopping Cart By Id
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ShoppingCart findById(@PathVariable long id) {
-		return shoppingCartRepository.findOne(id);
-	}
+	//get a shoppingcart with the passed id
+    @RequestMapping(value ="{scid}",method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public ShoppingCart getShoppingCartById(@PathVariable long scid) throws ShoppingCartDoesNotExistException {
+    ShoppingCart shoppingCart = shoppingCartRepository.findOne(scid);
+    if(shoppingCart == null){
+    	throw new ShoppingCartDoesNotExistException(scid);
+    }
+    return shoppingCart;
+   }
 	
 	//Create a Shopping Cart
-	@RequestMapping(value = "/", method = RequestMethod.POST)
+	@RequestMapping(value = "", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public void create(@RequestBody ShoppingCart shoppingCart, HttpServletRequest request, HttpServletResponse response){
+	public void create(@RequestBody ShoppingCart shoppingCart, @PathVariable long usrid, HttpServletRequest request, HttpServletResponse response) throws UserDoesNotExistException {
+		if(userRepository.findOne(usrid) == null){
+			throw new UserDoesNotExistException(usrid);
+		}
 		shoppingCartRepository.save(shoppingCart);
 		Long newId = shoppingCart.getId();
 		String requestUrl = request.getRequestURL().toString();
-		URI uri = new UriTemplate("{requestUrl}{id}").expand(requestUrl, newId);
+		URI uri = new UriTemplate("{requestUrl}/{id}").expand(requestUrl, newId);
 		response.setHeader("Location",uri.toASCIIString());
 	}
 	
 	//Modify a Shopping Cart
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.OK)
 	public void update(@PathVariable Long id, @RequestBody ShoppingCart shoppingCart){
 		ShoppingCart rx = shoppingCartRepository.findOne(id);
@@ -55,7 +67,7 @@ public class ShoppingCartController {
 	}
 	
 	//Delete a Shopping Cart By Id
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.OK)
 	public void delete(@PathVariable Long id){
 		shoppingCartRepository.delete(id);

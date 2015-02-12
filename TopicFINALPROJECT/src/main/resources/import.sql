@@ -18,3 +18,5 @@ INSERT INTO creditcard (bank, brand, expdate, number, ownername,user_id) VALUES(
 INSERT INTO shoppingcart (user_id) VALUES(1);
 INSERT INTO shoppingcart (user_id) VALUES(2);
 
+
+INSERT INTO product_line (quantity, subtotal, product_id, shoppingcart_id) VALUES(2, 999.98, 1, 1);

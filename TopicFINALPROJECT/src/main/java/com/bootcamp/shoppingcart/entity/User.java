@@ -2,6 +2,7 @@ package com.bootcamp.shoppingcart.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -50,7 +51,7 @@ public class User {
 	@NotNull
 	private String password;
 	
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	 @JoinColumn(name="user_id", referencedColumnName="id")
 	 private List<CreditCard> creditCard;
 	

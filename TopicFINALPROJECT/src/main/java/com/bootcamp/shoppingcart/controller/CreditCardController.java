@@ -23,13 +23,6 @@ import com.bootcamp.shoppingcart.service.CreditCardRepository;
 public class CreditCardController {
 	@Autowired
 	private CreditCardRepository creditCardRepository;
-
-	//Get All Credit Cards from User
-//	@RequestMapping(value = "/", method = RequestMethod.GET)
-//	Iterable<CreditCard> findByUserid(@PathVariable long idusr){
-//	//public Iterable<CreditCard> allCreditCard(@PathVariable long idusr){
-//		return creditCardRepository.findByUserid(idusr);
-//	}
 	
 	//Get Credit Card By Id
 	@RequestMapping(value = "/{idcc}", method = RequestMethod.GET)

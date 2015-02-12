@@ -1,12 +1,9 @@
 package com.bootcamp.shoppingcart.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,9 +15,8 @@ public class ProductLine {
 	@Column(name = "id")
 	private Long id;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "product_id")
-	private Product product;
+	@Column(name = "product_id")
+	private Long product_id;
 
 	@Column(name = "quantity")
 	private int quantity;
@@ -28,16 +24,15 @@ public class ProductLine {
 	@Column(name = "subtotal")
 	private double subTotal;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "shoppingcart_id")
-	private ShoppingCart shoppingCart;
-	
-	public ProductLine(Product product, int quantity, double subTotal,
-			ShoppingCart shoppingCart) {
-		this.product = product;
+	@Column(name = "shoppingcart_id")
+	private int shoppingcart_id;
+
+	public ProductLine(Long product_id, int quantity, double subTotal,
+			int shoppingCart_id) {
+		this.product_id = product_id;
 		this.quantity = quantity;
 		this.subTotal = subTotal;
-		this.shoppingCart = shoppingCart;
+		this.shoppingcart_id = shoppingCart_id;
 	}
 
 	public ProductLine(Long id) {
@@ -55,12 +50,12 @@ public class ProductLine {
 		this.id = id;
 	}
 
-	public Product getProduct() {
-		return product;
+	public Long getProduct_id() {
+		return product_id;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setProduct_id(Long product_id) {
+		this.product_id = product_id;
 	}
 
 	public int getQuantity() {
@@ -79,11 +74,11 @@ public class ProductLine {
 		this.subTotal = subTotal;
 	}
 
-	public ShoppingCart getShoppingCart() {
-		return shoppingCart;
+	public int getShoppingcart_id() {
+		return shoppingcart_id;
 	}
 
-	public void setShoppingCart(ShoppingCart shoppingCart) {
-		this.shoppingCart = shoppingCart;
-	}	
+	public void setShoppingcart_id(int shoppingcart_id) {
+		this.shoppingcart_id = shoppingcart_id;
+	}
 }
